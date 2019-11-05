@@ -16,11 +16,14 @@ function [oob_err, test_err] = RandomForest(X_tr, y_tr, X_te, y_te, numBags, m)
 %
 % You may use "fitctree" but not "TreeBagger" or any other inbuilt bagging function
 
+y_tr = (y_tr == 3) - (y_tr ~= 3);
+y_te = (y_te == 3) - (y_te ~= 3);
+
 n = size(X_tr,1);
 
 oob_err_pts = zeros(n,1); % Holds aggregated predictions
 oob_err_bags = zeros(numBags,1); % Holds OOB in terms of number of bags
-test_err = 0;
+test_vote = zeros(size(y_te,1),1);
 
 for b=1:numBags
     % Create dataset by sampling n points from D with replacement
@@ -29,8 +32,7 @@ for b=1:numBags
     yb = y_tr(samples,:);
     
     % Learn decision tree t_b -> IDS algo w/ split-feature randomization
-    c = cvpartition(n,'HoldOut',m);
-    t_b = fitctree(Db,yb,'CVPartition',c); % Holdout??? with cvpartition???
+    t_b = fitctree(Db,yb,'NumVariablesToSample',m);
     
     % Validation -> Retrieve all training pnts x_i not used to train
     unused = setdiff(1:n, samples);
@@ -54,13 +56,19 @@ for b=1:numBags
     oob_err_bags(b) = sum(oob_err_vote ~= y_tr)/n;
     
     % Plurality vote vs actual labels aggre for test error calc
-    test_err = test_err + (t_b.predict(X_te) ~= y_te);
+    test_vote = test_vote + t_b.predict(X_te);
 end
 
 % Calculate final out of bag error
 oob_err = oob_err_bags(numBags);
 
-test_err = test_err / n;
+test_vote = sign(test_vote);
+tie = ~test_vote;
+tie_dimen = size(tie,2);
+% Breaking tie vote arbitrarily
+% oob_err_vote(tie) = -1; % 
+test_vote(tie) = datasample([-1,1],tie_dimen);
+test_err = sum(test_vote ~= y_te,1) / size(y_te,1);
 
 % Plot out-of-bag-error 
 plot(1:numBags, oob_err_bags);
@@ -68,4 +76,3 @@ ylabel('OOB Error');
 xlabel('Num Bags');
 
 end
-
