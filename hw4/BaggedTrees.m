@@ -15,9 +15,8 @@ function [oob_err, test_err] = BaggedTrees(X_tr, y_tr, X_te, y_te, numBags)
 
 n = size(X_tr,1);
 
-
 oob_err_pts = zeros(n,1); % Holds aggregated predictions
-oob_err_bags = zeros(numBags,1);
+oob_err_bags = zeros(numBags,1); % Holds OOB in terms of number of bags
 test_err = 0;
 
 for b=1:numBags
@@ -41,9 +40,10 @@ for b=1:numBags
     
     % Find and deal with ties
     tie = ~oob_err_vote;
-    % tie_dimen = size(tie,2);
+    tie_dimen = size(tie,2);
     % Breaking tie vote arbitrarily
-    oob_err_vote(tie) = -1; % datasample([-1,1],tie_dimen)
+    % oob_err_vote(tie) = -1; % 
+    oob_err_vote(tie) = datasample([-1,1],tie_dimen);
     
     % save each tree's OOB error, which accumulates as we move on and 
     % include the next tree in voting etc...
@@ -62,6 +62,5 @@ test_err = test_err / n;
 plot(1:numBags, oob_err_bags);
 ylabel('OOB Error');
 xlabel('Num Bags');
-
 
 end
