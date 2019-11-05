@@ -28,8 +28,9 @@ for b=1:numBags
     Db = X_tr(samples,:);
     yb = y_tr(samples,:);
     
-    % Learn decision tree t_b
-    t_b = fitctree(Db,yb,'CrossVal','off'); % Holdout??? with cvpartition???
+    % Learn decision tree t_b -> IDS algo w/ split-feature randomization
+    c = cvpartition(n,'HoldOut',m);
+    t_b = fitctree(Db,yb,'CVPartition',c); % Holdout??? with cvpartition???
     
     % Validation -> Retrieve all training pnts x_i not used to train
     unused = setdiff(1:n, samples);
