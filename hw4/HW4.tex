@@ -30,11 +30,34 @@
 	\item (a) \& (b)
 
 \begin{figure}[H]
-\centering
 \includegraphics[scale=0.28]{image.jpg} 
 \end{figure}
 
-	\item (c)
+	\item (c) 
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Decision Trees} & \multicolumn{2}{l|}{\textbf{Cross Val. Error}} & \textbf{Test Error} \\ \hline
+1 vs 3                  & \multicolumn{2}{l|}{0.0090}                   & 0.0163             \\ \hline
+3 vs 5                  & \multicolumn{2}{l|}{0.0659}                   & 0.1196	         \\ \hline
+\end{tabular}
+\end{table}
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{200 Bagged Trees} & \multicolumn{2}{l|}{\textbf{OOB Error}} & \textbf{Test Error} \\ \hline
+1 vs 3                    & \multicolumn{2}{l|}{0.0030}             & 0.0116              \\ \hline
+3 vs 5                    & \multicolumn{2}{l|}{0.0338}             & 0.0890              \\ \hline
+\end{tabular}
+\end{table}
+\begin{table}[h]
+\begin{tabular}{|l|l|l|l|}
+\hline
+\textbf{Random Forest} & \multicolumn{2}{l|}{\textbf{OOB Error}} & \textbf{Test Error} \\ \hline
+1 vs 3                    & \multicolumn{2}{l|}{0.0090}             & 0.0186              \\ \hline
+3 vs 5                    & \multicolumn{2}{l|}{0.0371}             & 0.0767              \\ \hline
+\end{tabular}
+\end{table}
 
 \end{description}
 
