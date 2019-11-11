@@ -70,7 +70,7 @@ X_te = subsample(:,2:257);
 y_te = subsample(:,1);
 
 subplot(2, 1, 1);
-
+hold on
 title('1 vs 3');
 
 ct = fitctree(X_tr, y_tr, 'CrossVal', 'on');
@@ -80,8 +80,9 @@ fprintf('The test error of decision trees is %.4f\n', sum(predict(t,X_te) ~= y_t
 [train_err, test_err] = AdaBoost(X_tr, y_tr, X_te, y_te, 200);
 fprintf('The training error of 200 adaboost trees is %.4f\n', train_err);
 fprintf('The test error of 200 adaboost trees is %.4f\n', test_err);
-
+hold off
 subplot(2, 1, 2);
+hold on
 title('3 vs 5');
 
 fprintf('\n');
@@ -101,3 +102,4 @@ fprintf('The test error of decision trees is %.4f\n', sum(predict(t,X_te) ~= y_t
 [train_err, test_err] = AdaBoost(X_tr, y_tr, X_te, y_te, 200);
 fprintf('The training error of 200 adaboost trees is %.4f\n', train_err);
 fprintf('The test error of 200 adaboost trees is %.4f\n', test_err);
+hold off
