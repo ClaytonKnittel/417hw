@@ -15,8 +15,9 @@ predictions = knn1.predict(locs);
 
 subplot(2,1,1);
 gscatter(xg(:), yg(:), predictions, 'rgb');
-title('regular');
-
+title('k-NN decision boundary for k=1');
+ylabel('y');
+xlabel('x');
 
 X(:,2) = X(:,2) * 5;
 knn2 = fitcknn(X, y, 'NumNeighbors' , 1);
@@ -29,4 +30,6 @@ predictions = knn2.predict(locs);
 
 subplot(2,1,2);
 gscatter(xg(:), yg(:), predictions, 'rgb');
-title('scaled');
+title('0.5 Scaled k-NN decision boundary for k=1');
+ylabel('y');
+xlabel('x');
